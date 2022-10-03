@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class ComputerController : MonoBehaviour
 {
+    GameController gameController;
+
+    void Awake()
+    {
+        gameController = FindObjectOfType<GameController>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {

@@ -4,35 +4,51 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    //public AIEnemy ai;
-    //public GameObject gc;
-   // public GameController gc;
+    GameController gameController;
+    private Animator anim;
+
+
     public bool playerReady = false;
+
+    void Awake()
+    {
+        gameController = FindObjectOfType<GameController>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-       // gc.GetComponent<GameController>();
-       //gc = GetComponent<GameController>();
+        // gc.GetComponent<GameController>();
+        //gc = GetComponent<GameController>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        InputListener();
-        
-    }
-
-    public void InputListener()
-    {
-        //print("input listener called");
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (gameController.animationState == 0) //
         {
-            print("space pressed");
-            playerReady = true;
-            //gc.bothReady = true;
-            //ai.bothReady = true;
+            anim.SetInteger("CurrentState", 0);
+        }
+        if (gameController.animationState == 1) //
+        {
+            anim.SetInteger("CurrentState", 1);
+        }
+        if (gameController.animationState == 2) //
+        {
+            anim.SetInteger("CurrentState", 2);
+        }
+        if (gameController.animationState == 3) //
+        {
+            anim.SetInteger("CurrentState", 3);
+        }
+        if (gameController.animationState == 4) //
+        {
+            anim.SetInteger("CurrentState", 4);
+        }
+        if (gameController.animationState == 4) //
+        {
+            anim.SetInteger("CurrentState", 4);
         }
     }
 }
