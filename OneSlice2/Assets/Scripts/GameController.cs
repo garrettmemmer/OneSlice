@@ -31,6 +31,7 @@ public class GameController : MonoBehaviour
     public Canvas transitionCanvas;
 
     public int animationState = 0;
+    public int animationStateCPU = 0;
     public bool bothReady = false;
     public bool playerInput;
     public bool p1Ready = false;
@@ -91,7 +92,6 @@ public class GameController : MonoBehaviour
         switch (currentState)
         {
             case State.STATE_IDLE: //1
-
                 readyCanvas.enabled = true;
                 waiterBool = false;
                 InputListener();
@@ -99,17 +99,13 @@ public class GameController : MonoBehaviour
                 break;
 
             case State.STATE_STANCE: //2
-
                 animationState = 1;
-
-                
+                animationStateCPU = 1;
                 StanceLogic();
                 break;
 
             case State.STATE_GO: //3
-
                 reactionCanvas.enabled = true;
-
                 GoLogic();
                 break;
 
@@ -123,13 +119,10 @@ public class GameController : MonoBehaviour
             case State.STATE_ATTACK: //4
                 reactionCanvas.enabled = false;
                 decisionCanvas.enabled = true;
-
                 //adding screenshake here
                 // StartCoroutine(cameraShake.Shake(.15f, .4f)); this was clunckuy with my own code
                 //lets try with the assest store :)
                 StartCoroutine(tramaInducer.StartShaking());
-                
-                
                 //transitionCanvas.enabled = true;
                 AttackLogic();
                 break;
@@ -157,7 +150,6 @@ public class GameController : MonoBehaviour
 
     public void UpdateReadiness()
     {
-
         if (playerInput)// p1.playerReady) //(bothReady)
         {
             //sound logic //gong sound
@@ -199,7 +191,6 @@ public class GameController : MonoBehaviour
             cpuWin = true;
             print("cpu won and move to attack");
             currentState = State.STATE_ATTACK;
-
             // print("enemy attacked and you died");
         }
         if (playerInput)
@@ -219,11 +210,12 @@ public class GameController : MonoBehaviour
         if (playerWin)
         {
             animationState = 2;
+            animationStateCPU = 3;
             //cpuAnimationState = 2.5;
 
             //another sound here, sheathing sword and mayybe enemy death
             //FindObjectOfType<AudioManager>().Play("SheathSword");
-           //FindObjectOfType<AudioManager>().Play("EnemyDeath");
+            //FindObjectOfType<AudioManager>().Play("EnemyDeath");
 
             StartCoroutine(waiter(4));
             if (waiterBool)
@@ -235,6 +227,7 @@ public class GameController : MonoBehaviour
         if (cpuWin)
         {
             animationState = 4;
+            animationStateCPU = 2;
             //cpuAnimationState = ???; //winning slash
             StartCoroutine(waiter(4));
             if (waiterBool)
@@ -254,12 +247,12 @@ public class GameController : MonoBehaviour
         if (playerWin)
         {
             animationState = 3;
+            animationStateCPU = 4;
         }
 
         if(playerInput)
         {
-            print("next round would start here");
-
+           print("next round would start here");
            if(currentRound != 4)
            {
                 currentRound += 1;
@@ -289,7 +282,6 @@ public class GameController : MonoBehaviour
             txt.text = timerDisplay;
             //txt.text = "wtf";
         }
-        
     }
 
     IEnumerator waiter(int n)
@@ -330,6 +322,7 @@ public class GameController : MonoBehaviour
             transitionCanvas.transform.localScale += scaleChange;
             moveCanvas = true;
             animationState = 0;
+            animationStateCPU = 0;
         }
         //move the screen out of the window
         if (moveCanvas)
@@ -341,12 +334,7 @@ public class GameController : MonoBehaviour
             transitionCanvas.transform.position = defaultTransitionPosition;
             transitionCanvas.transform.localScale = defaultTransitionScale;
             transitionCanvas.enabled = false;
-            //if(inResetState)
-            //{
-                currentState = State.STATE_IDLE;
-            //    inResetState = false;
-            //}
-            
+            currentState = State.STATE_IDLE;
         }
     }
 
@@ -359,12 +347,9 @@ public class GameController : MonoBehaviour
         {
             TransitionScreen();
         }
-
         //need to reset both transition screens
-
         //switch to enemies[n]
         SwitchEnemies();
-        //
     }
 
     public void SwitchEnemies()
@@ -378,7 +363,6 @@ public class GameController : MonoBehaviour
             //set cpu2 to main ene    my  
             //set cpu1 position
             //set cpu to onlooker
-
             cpu1.SetActive(false);
             cpu2.transform.position = enemyFightingSpot.transform.position;
         }
