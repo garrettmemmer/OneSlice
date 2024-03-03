@@ -264,7 +264,7 @@ public class GameController : MonoBehaviour
             //FindObjectOfType<AudioManager>().Play("SheathSword");
             //FindObjectOfType<AudioManager>().Play("EnemyDeath");
 
-            StartCoroutine(waiter(2));
+            StartCoroutine(Waiter(2));
             if (waiterBool)
             {
                 waiterBool = false;
@@ -277,7 +277,7 @@ public class GameController : MonoBehaviour
             animationState = 4;
             animationStateCPU = 2;
             //cpuAnimationState = ???; //winning slash
-            StartCoroutine(waiter(4));
+            StartCoroutine(Waiter(4));
             if (waiterBool)
             {
                 waiterBool = false;
@@ -310,7 +310,7 @@ public class GameController : MonoBehaviour
             {
                 currentRound = 0;
                 currentFloor += 1;
-                string currentFloorTxtHolder = "FLOOR: ";
+                //string currentFloorTxtHolder = "FLOOR: ";
                // floorCounterTxt.txt = (currentFloorTxtHolder + currentFloor).ToString;
                 floorCounterTxt.SetText("Floor: " + currentFloor);//) = ("Floor: " + currentFloor).ToString;
                 currentState = State.STATE_RESET;
@@ -342,7 +342,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    IEnumerator waiter(int n)
+    IEnumerator Waiter(int n)
     { 
         //Wait for n seconds
         yield return new WaitForSeconds(n);
@@ -400,7 +400,7 @@ public class GameController : MonoBehaviour
     {
         //page turn animation
         //transitionCanvas.enabled = true;
-        waiter(1);
+        Waiter(1);
         if (waiterBool)
         {
             TransitionScreen();
