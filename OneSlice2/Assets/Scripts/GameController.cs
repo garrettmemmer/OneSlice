@@ -7,30 +7,44 @@ using TMPro;
 public class GameController : MonoBehaviour
 {
     public static GameController instance;
+
+    //this is all the enemies we will fight. the ones not currently fighting are actually hidden
     public GameObject[] Enemies;
+
+    //this is all the enemies that are waiting to fight
     public GameObject[] EnemiesIdle;
-    public GameObject[] EnemyPool;
-    public GameObject[] EnemyIdlePool;
-    // public GameObject cpu1;
-    // public GameObject cpu2;
-    // public GameObject cpu3;
-    // public GameObject cpu4;
-    // public GameObject cpu5;
-    // public GameObject cpu6; 
+    
+    //not used
+    //public GameObject[] EnemyPool;
+    //public GameObject[] EnemyIdlePool;
+
+    //idk about these two
     public Renderer enemy;
     public Material[] materials;
 
-    public GameObject enemyFightingSpot;
+    //not used
+    //public GameObject enemyFightingSpot;
 
 
+    //for some reason we reference the main gamecontroller again
     public GameController gc;
+
+    //this holds the camera with the camera shake on it
     public CameraShake cameraShake; 
+
+    //this holds the player because they have the trauma inducer script
     public TraumaInducer tramaInducer;
+
+    //current state of the game
+    //rename to gameState?
     public State currentState;
 
+    //variables for round and floor
     public int currentRound = 1;
     public int currentFloor = 1;
 
+
+    //UI Elements, jeez theres alot
     public TextMeshProUGUI txt;
     public TextMeshProUGUI floorCounterTxt;
     public Canvas newDecisionCanvas;
@@ -42,6 +56,7 @@ public class GameController : MonoBehaviour
     public Canvas decisionCanvas;
     public Canvas nextRoundCanvas;
     public Canvas transitionCanvas;
+
 
     public int animationState = 0;
     public int animationStateCPU = 0;
