@@ -45,7 +45,7 @@ public class GameController : MonoBehaviour
 
 
     //UI Elements, jeez theres alot
-    public TextMeshProUGUI txt;
+    public TextMeshProUGUI timerText;
     public TextMeshProUGUI floorCounterTxt;
     public Canvas newDecisionCanvas;
     public Animator CanvasAnimatior;
@@ -56,6 +56,7 @@ public class GameController : MonoBehaviour
     public Canvas decisionCanvas;
     public Canvas nextRoundCanvas;
     public Canvas transitionCanvas;
+    //public Text reactionText; //not used yet
 
 
     public int animationState = 0;
@@ -69,7 +70,7 @@ public class GameController : MonoBehaviour
     public bool waiter2Bool = false;
     private bool inResetState = false;
 
-    public Text reactionText;
+
 
     public float targetTime = 2.0f;
     public float timerValue = 0.0f;
@@ -102,27 +103,17 @@ public class GameController : MonoBehaviour
     {
         defaultTransitionScale = transitionCanvas.transform.localScale;
         defaultTransitionPosition = transitionCanvas.transform.position;
-        //reactionCanvas.enabled = false;
-        //reactionImage.enabled = false;
         decisionCanvas.enabled = false;
         nextRoundCanvas.enabled = false;
         transitionCanvas.enabled = false;
         scaleChange = new Vector3(0f, -0.005f, 0f);
         positionChange = new Vector3(3f, 0f, 0.0f);
         currentState = State.STATE_IDLE;
-
-        //materialTest = GetComponent<Renderer>().material;
     }
 
     void Update()
     {
         UpdateState();
-
-        //if (Input.GetKeyDown("space"))
-        //{
-            //enemy.material = materials[1];
-            // Enemies.GetComponent<MeshRenderer>().material = Material1; potential way for procedural colors
-        //}
     }
 
     void UpdateState()
@@ -185,7 +176,7 @@ public class GameController : MonoBehaviour
                 //decisionCanvas.enabled = false;
                 //inResetState = true;
                 timerValue = 0.0f;
-                txt.text = "0.0";//timerValue.ToString();
+                timerText.text = "0.0";//timerValue.ToString();
                 LoadRound(currentRound);
                 break;
 
@@ -352,7 +343,7 @@ public class GameController : MonoBehaviour
         timerDisplay = (timerValue - targetTime).ToString();
         if((timerValue - targetTime) >= 0f)
         {
-            txt.text = timerDisplay;
+            timerText.text = timerDisplay;
             //txt.text = "wtf";
         }
     }
@@ -516,22 +507,15 @@ public class GameController : MonoBehaviour
             EnemiesIdle[1].SetActive(false);
         }
 
-
-
-
+        //for starting the next round
         //spawn 2 new watchers
-
         //spawn new fighting enemy
-
     }
 
     public void GenerateProceduralEnemies()
     {
-
         //spawn 2 new watchers
-
         //spawn new fighting enemy
-
         //generate colors for new enemies 
     }
 }

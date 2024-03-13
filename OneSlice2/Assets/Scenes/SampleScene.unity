@@ -1754,6 +1754,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1178686358}
     - target: {fileID: 535741927434987745, guid: 44f2b74a4d4a17c44be08cd663aaabec, type: 3}
+      propertyPath: timerText
+      value: 
+      objectReference: {fileID: 1178686358}
+    - target: {fileID: 535741927434987745, guid: 44f2b74a4d4a17c44be08cd663aaabec, type: 3}
       propertyPath: readyCanvas
       value: 
       objectReference: {fileID: 342874775}
