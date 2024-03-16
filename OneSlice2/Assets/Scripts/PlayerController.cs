@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    GameController gameController;
+    public GameController gameController;
     private Animator anim;
 
 
@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        gameController = FindObjectOfType<GameController>();
+        //gameController = FindObjectOfType<GameController>();
+        
     }
 
     // Start is called before the first frame update
@@ -21,11 +22,17 @@ public class PlayerController : MonoBehaviour
         // gc.GetComponent<GameController>();
         //gc = GetComponent<GameController>();
         anim = GetComponent<Animator>();
+        //gameController = FindObjectOfType<GameController>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //if (!gameController)
+        //{
+       //     print("gamnecontroller isnt getting assigned");
+        //}
+        print("Game Controller, animation state is: " + gameController.animationState);
         if (gameController.animationState == 0) //
         {
             anim.SetInteger("CurrentState", 0);
