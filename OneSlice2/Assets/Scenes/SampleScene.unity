@@ -2245,6 +2245,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 6500176983027548287, guid: 563c210457e1e31429da67d1cfedce0c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6500176983435336415, guid: 563c210457e1e31429da67d1cfedce0c, type: 3}
       propertyPath: m_Controller
       value: 

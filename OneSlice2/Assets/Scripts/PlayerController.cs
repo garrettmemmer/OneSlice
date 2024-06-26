@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
         //{
        //     print("gamnecontroller isnt getting assigned");
         //}
-        print("Game Controller, animation state is: " + gameController.animationState);
+        //print("Game Controller, animation state is: " + gameController.animationState);
         if (gameController.animationState == 0) //
         {
             anim.SetInteger("CurrentState", 0);

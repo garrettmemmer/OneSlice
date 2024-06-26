@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEditor.Animations;
 
 public class GameController : MonoBehaviour
 {
@@ -217,6 +218,7 @@ public class GameController : MonoBehaviour
 
     public void StanceLogic()
     {
+        animationState = 2;
         TimerFunction();
         InputListener();
         if (playerInput && timerValue < targetTime)
@@ -235,6 +237,7 @@ public class GameController : MonoBehaviour
 
     public void GoLogic()
     {
+        
         TimerFunction();
         InputListener();
         reactionTimeCPU = Random.Range(5.0f, 7.0f);
@@ -262,7 +265,7 @@ public class GameController : MonoBehaviour
 
         if (playerWin)
         {
-            animationState = 2;
+            animationState = 3;
             animationStateCPU = 3;
             //cpuAnimationState = 2.5;
 
@@ -280,7 +283,7 @@ public class GameController : MonoBehaviour
         }
         if (cpuWin)
         {
-            animationState = 4;
+            animationState = 3;
             animationStateCPU = 2;
             //cpuAnimationState = ???; //winning slash
             StartCoroutine(Waiter(4));
@@ -300,7 +303,7 @@ public class GameController : MonoBehaviour
         nextRoundCanvas.enabled = true;
         if (playerWin)
         {
-            animationState = 3;
+            animationState = 5;
             animationStateCPU = 4;
         }
 
