@@ -1,4 +1,4 @@
-using System.Collections;
+   using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 //using UnityEditor.Animations;
@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour
     public State currentState;
     public bool playerInput;
     public GameObject playerUnit;
-    public GameObject aiUnit;
+    public GameObject aiUnit1;
 
     //public TextMeshProUGUI timerText;
     public float targetTime = 2.0f;
@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour
     const string AI_Idle = "TestIdle";
     const string AI_Ready = "TestReady";
     const string AI_Slice = "TestSlice";
-    const string AI_Decision = "TestFalseStart";
+    const string AI_FalseStart = "TestFalseStart";
     const string AI_Death = "TestDefeat";
     const string AI_Victory = "TestVicotry";
     private string currentAiAnimaton;
@@ -69,6 +69,10 @@ public class GameController : MonoBehaviour
     public int currentRound = 1;
     public int currentFloor = 1;
 
+    public bool playerFalseStart = false;
+    public bool aiFalseStart = false;
+    
+
     public enum State
     {
         //Post It number
@@ -88,7 +92,7 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         playerUnit = GameObject.Find("Player");
-        //aiUnit = GameObject.Find("Player");
+        aiUnit1 = GameObject.Find("Enemy1");
     }
 
     // Start is called before the first frame update
@@ -102,7 +106,7 @@ public class GameController : MonoBehaviour
         gameEndingCanvas.enabled = false;
         //we are going to have to get the player object and then the animator off the player object. I think we can do that here and in the awake function
         playerAnimator = playerUnit.GetComponent<Animator>();   
-        aiAnimator= playerUnit.GetComponent<Animator>();
+        aiAnimator= aiUnit1.GetComponent<Animator>();
         //scaleChange = new Vector3(0f, -0.005f, 0f);
         //positionChange = new Vector3(3f, 0f, 0.0f);
         currentState = State.STATE_IDLE;
@@ -121,7 +125,7 @@ public class GameController : MonoBehaviour
                 readyCanvas.enabled = true;
                 waiterBool = false;
                 ChangePlayerAnimationState(Player_Idle);
-               // ChangeAIAnimationState();
+                ChangeAIAnimationState(AI_Idle);
                 InputListener();
                 IdleLogic();
                 break;
@@ -129,6 +133,7 @@ public class GameController : MonoBehaviour
             case State.STATE_STANCE: //2
                 CanvasAnimatior.SetInteger("transitionNumber", 0);
                 ChangePlayerAnimationState(Player_Ready);
+                ChangeAIAnimationState(AI_Ready);
                 //animationState = 1;
                 ///animationStateCPU = 1;
                 StanceLogic();
@@ -147,10 +152,20 @@ public class GameController : MonoBehaviour
             case State.STATE_FALSEALARM: //3.2
                 print("entered FALSE ALARM");
                 print("right now, nothing happens, soon we will send to defeat state");
+                //Not implemeneted, will create later
                 //FalseAlarmLogic();
-                ChangePlayerAnimationState(Player_FalseStart);
-          
-                currentState = State.STATE_DEFEAT;
+
+                if (playerFalseStart)
+                {
+                    ChangePlayerAnimationState(Player_FalseStart);
+                    currentState = State.STATE_ATTACK;
+                }  
+                    
+                if (aiFalseStart)
+                {
+                    ChangeAIAnimationState(AI_FalseStart);
+                    currentState = State.STATE_ATTACK;
+                }
                 break;
 
             case State.STATE_ATTACK: //4
@@ -163,6 +178,7 @@ public class GameController : MonoBehaviour
 
                 //slice animation
                 ChangePlayerAnimationState(Player_Slice);
+                ChangeAIAnimationState(AI_Slice);
                 //adding screenshake here
                 //StartCoroutine(cameraShake.Shake(.001f, .2f));
                 //this was clunckuy with my own code
@@ -182,26 +198,19 @@ public class GameController : MonoBehaviour
             case State.STATE_RESET: //6
                 playerInput = false;
                 nextRoundCanvas.enabled = false;
-
                 timerValue = 0.0f;
                 timerText.text = "0.0";//timerValue.ToString();
                 LoadRound(currentRound);
-
                 break;
 
             
             case State.STATE_NEWROOM: //7
                 //new room transition
                 CanvasAnimatior.SetInteger("transitionNumber", 0);
-
                 //new room sound
-
                 //deactivate old enemy
-
                 //spawn 2 new watchers
-
                 //spawn new fighting enemy
-
                 //set state to idle?
                 break;
 
@@ -214,7 +223,9 @@ public class GameController : MonoBehaviour
                    * victory animations
                  * 
                 */
-                ChangePlayerAnimationState(Player_Victory); 
+                print("entered victory state");
+                ChangePlayerAnimationState(Player_Victory);
+                ChangeAIAnimationState(AI_Death);
                 gameEndingCanvas.enabled = true;
                 gameEndingCanvas.transform.GetChild(1).transform.gameObject.SetActive(true);
                 break;
@@ -229,7 +240,9 @@ public class GameController : MonoBehaviour
                   * victory animations
                 * 
                */
+                print("entered defeat state");
                 ChangePlayerAnimationState(Player_Death);
+                ChangeAIAnimationState(AI_Victory);
                 gameEndingCanvas.enabled = true;
                 gameEndingCanvas.transform.GetChild(0).transform.gameObject.SetActive(true);
                 break;
@@ -316,6 +329,7 @@ public class GameController : MonoBehaviour
             //animationstate = stumble
             //sound = whoa
             currentState = State.STATE_FALSEALARM;
+            playerFalseStart = true;
             print("someone swung too early, soon we will develop a way to punish this");
         }
         if (timerValue >= targetTime)
@@ -327,7 +341,6 @@ public class GameController : MonoBehaviour
 
     public void GoLogic()
     {
-
         TimerFunction();
         InputListener();
         reactionTimeCPU = Random.Range(5.0f, 7.0f);
@@ -348,9 +361,7 @@ public class GameController : MonoBehaviour
 
     public void AttackLogic()
     {
-
         //FindObjectOfType<AudioManager>().Play("Slice");
-
         CanvasAnimatior.SetInteger("transitionNumber", 1);
 
         if (playerWin)
@@ -362,7 +373,6 @@ public class GameController : MonoBehaviour
             //another sound here, sheathing sword and mayybe enemy death
             //FindObjectOfType<AudioManager>().Play("SheathSword");
             //FindObjectOfType<AudioManager>().Play("EnemyDeath");
-
             StartCoroutine(Waiter(2));
             if (waiterBool)
             {
@@ -409,7 +419,6 @@ public class GameController : MonoBehaviour
             currentRound += 1;
             currentState = State.STATE_RESET;
     
-
             print("next round would start here");
             //last round logic
             
@@ -438,7 +447,6 @@ public class GameController : MonoBehaviour
                 currentState = State.STATE_RESET;
                 //currentState = State.STATE_NEWFLOOR;
             */
-
                 //this is code to display the Win State
                 print("the final round is over. ");
                 currentState = State.STATE_VICTORY; //this will be the gameover screen
